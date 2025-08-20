@@ -1,0 +1,83 @@
+{
+  "info": {
+    "_postman_id": "fb-ig-graph-api-collection",
+    "name": "Instagram Integration",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Step 1: Create Media Container",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "image_url",
+              "value": "{{image_url}}",
+              "type": "text"
+            },
+            {
+              "key": "caption",
+              "value": "Posted via API 🚀 #InstaAPI",
+              "type": "text"
+            },
+            {
+              "key": "access_token",
+              "value": "{{access_token}}",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "https://graph.facebook.com/v19.0/{{ig_user_id}}/media",
+          "protocol": "https",
+          "host": ["graph", "facebook", "com"],
+          "path": ["v19.0", "{{ig_user_id}}", "media"]
+        }
+      }
+    },
+    {
+      "name": "Step 2: Publish Media Container",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "creation_id",
+              "value": "{{creation_id}}",
+              "type": "text"
+            },
+            {
+              "key": "access_token",
+              "value": "{{access_token}}",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "https://graph.facebook.com/v19.0/{{ig_user_id}}/media_publish",
+          "protocol": "https",
+          "host": ["graph", "facebook", "com"],
+          "path": ["v19.0", "{{ig_user_id}}", "media_publish"]
+        }
+      }
+    }
+  ],
+  "auth": {
+    "type": "noauth"
+  }
+}

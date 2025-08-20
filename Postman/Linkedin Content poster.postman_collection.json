@@ -1,0 +1,370 @@
+{
+	"info": {
+		"_postman_id": "2fa16c56-8a96-4ae8-9101-d2ff1e4545c4",
+		"name": "Linkedin Content poster",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46874024",
+		"_collection_link": "https://charanteja-7909049.postman.co/workspace/Charan-Teja's-Workspace~5d600928-8c8e-4016-8ddf-36addd2b2b86/collection/46874024-2fa16c56-8a96-4ae8-9101-d2ff1e4545c4?action=share&source=collection_link&creator=46874024"
+	},
+	"item": [
+		{
+			"name": "text",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "tokenName",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.linkedin.com/v2/userinfo",
+					"protocol": "https",
+					"host": [
+						"api",
+						"linkedin",
+						"com"
+					],
+					"path": [
+						"v2",
+						"userinfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "image_text",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "tokenName",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"registerUploadRequest\": {\r\n        \"recipes\": [\r\n            \"urn:li:digitalmediaRecipe:feedshare-image\"\r\n        ],\r\n        \"owner\": \"urn:li:person:-6Yj3AUaL2\",\r\n        \"serviceRelationships\": [\r\n            {\r\n                \"relationshipType\": \"OWNER\",\r\n                \"identifier\": \"urn:li:userGeneratedContent\"\r\n            }\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.linkedin.com/v2/assets?action=registerUpload",
+					"protocol": "https",
+					"host": [
+						"api",
+						"linkedin",
+						"com"
+					],
+					"path": [
+						"v2",
+						"assets"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "registerUpload"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "text",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "tokenName",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"author\": \"urn:li:person:-6Yj3AUaL2\",\r\n    \"lifecycleState\": \"PUBLISHED\",\r\n    \"specificContent\": {\r\n        \"com.linkedin.ugc.ShareContent\": {\r\n            \"shareCommentary\": {\r\n                \"text\": \"Hello World! This is my first Share on LinkedIn!\"\r\n            },\r\n            \"shareMediaCategory\": \"NONE\"\r\n        }\r\n    },\r\n    \"visibility\": {\r\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.linkedin.com/v2/ugcPosts",
+					"protocol": "https",
+					"host": [
+						"api",
+						"linkedin",
+						"com"
+					],
+					"path": [
+						"v2",
+						"ugcPosts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "image_text",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "image_text",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "tokenName",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"author\": \"urn:li:person:-6Yj3AUaL2\",\r\n    \"lifecycleState\": \"PUBLISHED\",\r\n    \"specificContent\": {\r\n        \"com.linkedin.ugc.ShareContent\": {\r\n            \"shareCommentary\": {\r\n                \"text\": \"Check out this image I posted via the API!\"\r\n            },\r\n            \"shareMediaCategory\": \"IMAGE\",\r\n            \"media\": [\r\n                {\r\n                    \"status\": \"READY\",\r\n                    \"media\": \"urn:li:digitalmediaAsset:D5622AQG0q0epQYs-Eg\"\r\n                }\r\n            ]\r\n        }\r\n    },\r\n    \"visibility\": {\r\n        \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.linkedin.com/v2/ugcPosts",
+					"protocol": "https",
+					"host": [
+						"api",
+						"linkedin",
+						"com"
+					],
+					"path": [
+						"v2",
+						"ugcPosts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "video_text",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.linkedin.com/v2/assets?action=registerUpload",
+					"protocol": "https",
+					"host": [
+						"api",
+						"linkedin",
+						"com"
+					],
+					"path": [
+						"v2",
+						"assets"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "registerUpload"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "video_text",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "tokenName",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "postman-cloud:///1f0685b0-c7e6-4cd0-a1c7-04907fadecc6"
+					}
+				},
+				"url": {
+					"raw": "https://www.linkedin.com/dms-uploads/sp/v2/D5605AQF001Qs_zwOSA/uploadedVideo/B56Zg7MbORH0AE-/0?ca=vector_feedshare&cn=uploads_secure&ccn=ambry-video&iri=B01-86&sync=0&v=beta&ut=01-6F9qLiVVrQ1",
+					"protocol": "https",
+					"host": [
+						"www",
+						"linkedin",
+						"com"
+					],
+					"path": [
+						"dms-uploads",
+						"sp",
+						"v2",
+						"D5605AQF001Qs_zwOSA",
+						"uploadedVideo",
+						"B56Zg7MbORH0AE-",
+						"0"
+					],
+					"query": [
+						{
+							"key": "ca",
+							"value": "vector_feedshare"
+						},
+						{
+							"key": "cn",
+							"value": "uploads_secure"
+						},
+						{
+							"key": "ccn",
+							"value": "ambry-video"
+						},
+						{
+							"key": "iri",
+							"value": "B01-86"
+						},
+						{
+							"key": "sync",
+							"value": "0"
+						},
+						{
+							"key": "v",
+							"value": "beta"
+						},
+						{
+							"key": "ut",
+							"value": "01-6F9qLiVVrQ1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Video_text",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "tokenName",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.linkedin.com/v2/assets/D5605AQF001Qs_zwOSA",
+					"protocol": "https",
+					"host": [
+						"api",
+						"linkedin",
+						"com"
+					],
+					"path": [
+						"v2",
+						"assets",
+						"D5605AQF001Qs_zwOSA"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "video_text2",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.linkedin.com/v2/ugcPosts",
+					"protocol": "https",
+					"host": [
+						"api",
+						"linkedin",
+						"com"
+					],
+					"path": [
+						"v2",
+						"ugcPosts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
