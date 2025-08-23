@@ -39,6 +39,7 @@
       "last 1 safari version"
     ]
   },
+  "homepage": "https://ishwaqsyed03.github.io/Brand-manager",
   "devDependencies": {
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
