@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.b374da1e.css",
-    "main.js": "/static/js/main.2d893b84.js",
-    "index.html": "/index.html",
-    "main.b374da1e.css.map": "/static/css/main.b374da1e.css.map",
-    "main.2d893b84.js.map": "/static/js/main.2d893b84.js.map"
+    "main.css": "/Brand-manager/static/css/main.b374da1e.css",
+    "main.js": "/Brand-manager/static/js/main.d674074d.js",
+    "index.html": "/Brand-manager/index.html",
+    "main.b374da1e.css.map": "/Brand-manager/static/css/main.b374da1e.css.map",
+    "main.d674074d.js.map": "/Brand-manager/static/js/main.d674074d.js.map"
   },
   "entrypoints": [
     "static/css/main.b374da1e.css",
-    "static/js/main.2d893b84.js"
+    "static/js/main.d674074d.js"
   ]
 }
