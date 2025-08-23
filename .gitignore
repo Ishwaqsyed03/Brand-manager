@@ -16,7 +16,8 @@ frontend/.env
 backend/.env
 
 # Build outputs
-build/
+frontend/build/
+backend/build/
 dist/
 coverage/
 .next/
