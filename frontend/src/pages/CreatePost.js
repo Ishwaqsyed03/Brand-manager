@@ -26,6 +26,7 @@ const CreatePost = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [aiPrompt, setAiPrompt] = useState('');
   const [aiTone, setAiTone] = useState('neutral');
+  const [aiPlatform, setAiPlatform] = useState('generic');
   const [aiLoadingText, setAiLoadingText] = useState(false);
   const [aiLoadingImage, setAiLoadingImage] = useState(false);
   const [aiMedia, setAiMedia] = useState([]); // { url }
@@ -141,8 +142,23 @@ const CreatePost = () => {
     }
     setAiLoadingText(true);
     try {
-      const { data } = await axios.post('/ai/generate-text', { prompt: aiPrompt, tone: aiTone });
-      const generated = (data.text || '').slice(0, 280);
+      const platformCharLimits = {
+        twitter: 280,
+        x: 280,
+        linkedin: 3000,
+        instagram: 2200,
+        facebook: 63206,
+        generic: 500
+      };
+      const maxLength = platformCharLimits[aiPlatform] || 500;
+
+      const { data } = await axios.post('/ai/generate-text', {
+        prompt: aiPrompt,
+        tone: aiTone,
+        platform: aiPlatform,
+        maxLength
+      });
+      const generated = (data.text || '').slice(0, maxLength);
       setFormData((prev) => ({ ...prev, text: generated }));
       toast.success('Text generated');
     } catch (err) {
@@ -206,6 +222,18 @@ const CreatePost = () => {
                 <option value="friendly">Friendly</option>
                 <option value="professional">Professional</option>
                 <option value="witty">Witty</option>
+              </select>
+              <label className="form-label mt-4 block">Platform</label>
+              <select
+                value={aiPlatform}
+                onChange={(e) => setAiPlatform(e.target.value)}
+                className="input-field"
+              >
+                <option value="generic">Generic</option>
+                <option value="twitter">Twitter/X</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="instagram">Instagram</option>
+                <option value="facebook">Facebook</option>
               </select>
               <div className="flex space-x-2 mt-4">
                 <button

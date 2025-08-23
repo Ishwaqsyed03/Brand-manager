@@ -37,8 +37,20 @@ const Profile = () => {
   };
 
   const handleSocialConnect = (platform) => {
-    // This would typically redirect to OAuth flow
-    toast.info(`${platform} connection not implemented yet`);
+    const backendBase = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
+    const map = {
+      Twitter: '/oauth/twitter',
+      Instagram: '/oauth/instagram',
+      LinkedIn: '/oauth/linkedin',
+      Facebook: '/oauth/facebook'
+    };
+    const path = map[platform];
+    if (!path) {
+      toast.error('Unsupported platform');
+      return;
+    }
+    // Let backend initiate OAuth (must be absolute URL; CRA proxy doesn't apply to top-level redirects)
+    window.location.href = `${backendBase}${path}`;
   };
 
   return (
