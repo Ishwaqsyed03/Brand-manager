@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { 
@@ -17,7 +17,6 @@ import {
   CheckCircle,
   AlertCircle
 } from 'lucide-react';
-import toast from 'react-hot-toast';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -30,15 +29,14 @@ const Dashboard = () => {
   const [recentPosts, setRecentPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
-      // Fetch posts and stats
+      // Try to fetch posts and stats from backend
       const [postsResponse] = await Promise.all([
-        fetch('/post?limit=5').then(res => res.json())
+        fetch('/post?limit=5').then(res => {
+          if (!res.ok) throw new Error('Backend not available');
+          return res.json();
+        })
       ]);
 
       setRecentPosts(postsResponse.posts || []);
@@ -55,11 +53,58 @@ const Dashboard = () => {
         engagementRate: 15.2 // Mock data
       });
     } catch (error) {
-      toast.error('Failed to fetch dashboard data');
+      // If backend is not available (e.g., on GitHub Pages), use mock data
+      const mockPosts = [
+        {
+          id: 'demo-1',
+          title: 'Welcome to Steward!',
+          content: 'This is a demo post to showcase the platform capabilities.',
+          status: 'posted',
+          platforms: ['twitter', 'linkedin'],
+          createdAt: new Date().toISOString(),
+          scheduledAt: null
+        },
+        {
+          id: 'demo-2', 
+          title: 'Getting Started with Social Media Management',
+          content: 'Learn how to effectively manage your social media presence with Steward.',
+          status: 'scheduled',
+          platforms: ['instagram', 'facebook'],
+          createdAt: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+          scheduledAt: new Date(Date.now() + 86400000).toISOString() // 1 day from now
+        },
+        {
+          id: 'demo-3',
+          title: 'Analytics and Insights',
+          content: 'Track your performance with detailed analytics and insights.',
+          status: 'posted',
+          platforms: ['twitter'],
+          createdAt: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+          scheduledAt: null
+        }
+      ];
+
+      setRecentPosts(mockPosts);
+      
+      // Calculate stats from mock data
+      const totalPosts = mockPosts.length;
+      const scheduledPosts = mockPosts.filter(post => post.status === 'scheduled').length;
+      const connectedPlatforms = Object.values(user?.socialConnections || {}).filter(platform => platform.connected).length;
+      
+      setStats({
+        totalPosts,
+        scheduledPosts,
+        connectedPlatforms,
+        engagementRate: 15.2 // Mock data
+      });
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.socialConnections]);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   const getStatusIcon = (status) => {
     switch (status) {

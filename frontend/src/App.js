@@ -8,11 +8,11 @@ import Register from './pages/Register';
 import CreatePost from './pages/CreatePost';
 import Posts from './pages/Posts';
 import Profile from './pages/Profile';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 import './App.css';
 
 function AppContent() {
-  const { user } = useAuth();
+  // const { user } = useAuth(); // Removed unused variable
 
   return (
     <Router basename="/Brand-manager">
