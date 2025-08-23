@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Plus, 
@@ -21,31 +21,95 @@ const Posts = () => {
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    fetchPosts();
-  }, [filter]);
-
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const response = await fetch(`/post?status=${filter}`);
+      if (!response.ok) throw new Error('Backend not available');
       const data = await response.json();
       setPosts(data.posts || []);
     } catch (error) {
-      toast.error('Failed to fetch posts');
+      // If backend is not available (e.g., on GitHub Pages), use mock data
+      const mockPosts = [
+        {
+          id: 'demo-1',
+          title: 'Welcome to Steward!',
+          content: 'This is a demo post to showcase the platform capabilities. Experience seamless social media management with our intuitive interface.',
+          status: 'posted',
+          platforms: ['twitter', 'linkedin'],
+          createdAt: new Date().toISOString(),
+          scheduledAt: null,
+          engagementRate: 8.5
+        },
+        {
+          id: 'demo-2', 
+          title: 'Getting Started with Social Media Management',
+          content: 'Learn how to effectively manage your social media presence with Steward. Our platform helps you schedule, track, and optimize your content strategy.',
+          status: 'scheduled',
+          platforms: ['instagram', 'facebook'],
+          createdAt: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+          scheduledAt: new Date(Date.now() + 86400000).toISOString(), // 1 day from now
+          engagementRate: null
+        },
+        {
+          id: 'demo-3',
+          title: 'Analytics and Insights',
+          content: 'Track your performance with detailed analytics and insights. Monitor engagement, reach, and optimize your content for better results.',
+          status: 'posted',
+          platforms: ['twitter'],
+          createdAt: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+          scheduledAt: null,
+          engagementRate: 12.3
+        },
+        {
+          id: 'demo-4',
+          title: 'Content Planning Made Easy',
+          content: 'Plan and organize your content calendar with our easy-to-use tools. Stay consistent and engage your audience effectively.',
+          status: 'draft',
+          platforms: ['linkedin', 'twitter'],
+          createdAt: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
+          scheduledAt: null,
+          engagementRate: null
+        },
+        {
+          id: 'demo-5',
+          title: 'Automation Features',
+          content: 'Discover how automation can save you time while maintaining quality engagement with your audience.',
+          status: 'failed',
+          platforms: ['instagram'],
+          createdAt: new Date(Date.now() - 345600000).toISOString(), // 4 days ago
+          scheduledAt: new Date(Date.now() - 172800000).toISOString(), // Was scheduled 2 days ago
+          engagementRate: null
+        }
+      ];
+      
+      // Filter posts based on selected filter
+      let filteredPosts = mockPosts;
+      if (filter !== 'all') {
+        filteredPosts = mockPosts.filter(post => post.status === filter);
+      }
+      
+      setPosts(filteredPosts);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filter]);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
 
   const handleDelete = async (postId) => {
     if (!window.confirm('Are you sure you want to delete this post?')) return;
 
     try {
-      await fetch(`/post/${postId}`, { method: 'DELETE' });
+      const response = await fetch(`/post/${postId}`, { method: 'DELETE' });
+      if (!response.ok) throw new Error('Backend not available');
       toast.success('Post deleted successfully');
       fetchPosts();
     } catch (error) {
-      toast.error('Failed to delete post');
+      // If backend is not available, simulate deletion by removing from local state
+      setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
+      toast.success('Post deleted successfully (demo mode)');
     }
   };
 

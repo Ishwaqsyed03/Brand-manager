@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Mail, Lock, Eye, EyeOff, Twitter, Linkedin, Instagram, Facebook } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Twitter, Linkedin } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const Login = () => {
@@ -122,9 +122,9 @@ const Login = () => {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-primary-600 hover:text-primary-500">
+                <button type="button" className="font-medium text-primary-600 hover:text-primary-500">
                   Forgot your password?
-                </a>
+                </button>
               </div>
             </div>
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Mail, Lock, Eye, EyeOff, User, CheckCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const Register = () => {
@@ -211,13 +211,13 @@ const Register = () => {
               <div className="ml-3 text-sm">
                 <label htmlFor="terms" className="text-gray-700">
                   I agree to the{' '}
-                  <a href="#" className="text-primary-600 hover:text-primary-500">
+                  <button type="button" className="text-primary-600 hover:text-primary-500 underline">
                     Terms of Service
-                  </a>{' '}
+                  </button>{' '}
                   and{' '}
-                  <a href="#" className="text-primary-600 hover:text-primary-500">
+                  <button type="button" className="text-primary-600 hover:text-primary-500 underline">
                     Privacy Policy
-                  </a>
+                  </button>
                 </label>
               </div>
             </div>
