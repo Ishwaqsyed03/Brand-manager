@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Brand-manager/static/css/main.b374da1e.css",
-    "main.js": "/Brand-manager/static/js/main.d674074d.js",
+    "main.js": "/Brand-manager/static/js/main.518b8e6b.js",
     "index.html": "/Brand-manager/index.html",
     "main.b374da1e.css.map": "/Brand-manager/static/css/main.b374da1e.css.map",
-    "main.d674074d.js.map": "/Brand-manager/static/js/main.d674074d.js.map"
+    "main.518b8e6b.js.map": "/Brand-manager/static/js/main.518b8e6b.js.map"
   },
   "entrypoints": [
     "static/css/main.b374da1e.css",
-    "static/js/main.d674074d.js"
+    "static/js/main.518b8e6b.js"
   ]
 }
