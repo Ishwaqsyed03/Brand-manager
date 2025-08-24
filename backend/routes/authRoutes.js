@@ -1,17 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
-// Temporarily disable auth middleware
-// const auth = require("../middlewares/auth");
+const auth = require("../middlewares/auth");
 
 // Public routes
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 
-// Make previously protected routes public temporarily
-router.get("/profile", authController.getProfile);
-router.put("/profile", authController.updateProfile);
-router.post("/connect-platform", authController.connectPlatform);
+// Protected routes
+router.get("/profile", auth, authController.getProfile);
+router.put("/profile", auth, authController.updateProfile);
+router.post("/connect-platform", auth, authController.connectPlatform);
 
 // Social media connection routes (mock for now)
 router.get("/connect/twitter", (req, res) => {
