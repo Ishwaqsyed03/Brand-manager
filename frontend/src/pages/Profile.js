@@ -37,7 +37,7 @@ const Profile = () => {
   };
 
   const handleSocialConnect = (platform) => {
-    const backendBase = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
+  const backendBase = process.env.REACT_APP_API_BASE || 'https://brandmanager-backend.onrender.com';
     const map = {
       Twitter: '/oauth/twitter',
       Instagram: '/oauth/instagram',
