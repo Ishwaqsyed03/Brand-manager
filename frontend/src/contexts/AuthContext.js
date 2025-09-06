@@ -32,94 +32,35 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
 
+  // Authentication logic is commented out for guest mode
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetch('/auth/profile', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-        .then(res => res.json())
-        .then(data => {
-          setUser(data);
-          setLoading(false);
-        })
-        .catch(() => {
-          setUser(guestUser);
-          setLoading(false);
-        });
-    } else {
-      setUser(guestUser);
-      setLoading(false);
-    }
+    setUser(guestUser);
+    setLoading(false);
   }, []);
 
-  const login = async (email, password) => {
-    setLoading(true);
-    try {
-      const res = await fetch('/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (res.ok && data.token) {
-        localStorage.setItem('token', data.token);
-        setUser(data.user);
-        setLoading(false);
-        return { token: data.token, user: data.user };
-      } else {
-        setLoading(false);
-        throw new Error(data.error || 'Login failed');
-      }
-    } catch (err) {
-      setLoading(false);
-      throw err;
-    }
+  // Guest mode: login does nothing
+  const login = async () => {
+    setUser(guestUser);
+    setLoading(false);
+    return { user: guestUser };
   };
 
-  const register = async (userData) => {
-    setLoading(true);
-    try {
-      const res = await fetch('/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData)
-      });
-      const data = await res.json();
-      if (res.ok && data.token) {
-        localStorage.setItem('token', data.token);
-        setUser(data.user);
-        setLoading(false);
-        return { token: data.token, user: data.user };
-      } else {
-        setLoading(false);
-        throw new Error(data.error || 'Registration failed');
-      }
-    } catch (err) {
-      setLoading(false);
-      throw err;
-    }
+  // Guest mode: register does nothing
+  const register = async () => {
+    setUser(guestUser);
+    setLoading(false);
+    return { user: guestUser };
   };
 
+  // Guest mode: logout just sets guest
   const logout = () => {
-    localStorage.removeItem('token');
     setUser(guestUser);
   };
 
-  const updateProfile = async (profileData) => {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-    const res = await fetch('/auth/profile', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(profileData)
-    });
-    const data = await res.json();
-    setUser(data);
-    return data;
+  // Guest mode: updateProfile does nothing
+  const updateProfile = async () => {
+    setUser(guestUser);
+    return guestUser;
   };
 
   // Social login stubs (to be implemented)
