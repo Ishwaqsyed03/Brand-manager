@@ -29,6 +29,7 @@ const Navbar = () => {
 
   const isActive = (path) => location.pathname === path;
 
+  const isGuest = !user || user.id === 'guest';
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200 fixed top-0 left-0 right-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,30 +81,39 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* User Menu */}
+            {/* User Menu or Auth Buttons */}
             <div className="relative">
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900"
-              >
-                <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-medium">
-                    {user?.profile?.name?.charAt(0) || user?.username?.charAt(0) || 'U'}
-                  </span>
+              {isGuest ? (
+                <div className="flex items-center space-x-2">
+                  <Link to="/login" className="btn-secondary px-4 py-2">Login</Link>
+                  <Link to="/register" className="btn-primary px-4 py-2">Sign Up</Link>
                 </div>
-                <span className="hidden md:block">{user?.profile?.name || user?.username}</span>
-              </button>
-
-              {isOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1">
+              ) : (
+                <>
                   <button
-                    onClick={logout}
-                    className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900"
                   >
-                    <LogOut className="w-4 h-4" />
-                    <span>Sign out</span>
+                    <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-medium">
+                        {user?.profile?.name?.charAt(0) || user?.username?.charAt(0) || 'U'}
+                      </span>
+                    </div>
+                    <span className="hidden md:block">{user?.profile?.name || user?.username}</span>
                   </button>
-                </div>
+
+                  {isOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1">
+                      <button
+                        onClick={logout}
+                        className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        <span>Sign out</span>
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
 

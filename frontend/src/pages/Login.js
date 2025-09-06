@@ -11,7 +11,7 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, socialLogin } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -122,9 +122,9 @@ const Login = () => {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-primary-600 hover:text-primary-500">
+                <Link to="/forgot-password" className="font-medium text-primary-600 hover:text-primary-500">
                   Forgot your password?
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -155,12 +155,20 @@ const Login = () => {
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-3">
-              <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <button
+                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                type="button"
+                onClick={() => { if (window.confirm('Continue with Twitter login?')) { socialLogin('twitter'); } }}
+              >
                 <Twitter className="h-5 w-5 text-blue-400" />
                 <span className="ml-2">Twitter</span>
               </button>
 
-              <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <button
+                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                type="button"
+                onClick={() => { if (window.confirm('Continue with LinkedIn login?')) { socialLogin('linkedin'); } }}
+              >
                 <Linkedin className="h-5 w-5 text-blue-600" />
                 <span className="ml-2">LinkedIn</span>
               </button>

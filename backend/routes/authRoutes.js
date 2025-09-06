@@ -7,6 +7,10 @@ const auth = require("../middlewares/auth");
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 
+// Forgot password routes
+router.post("/forgot-password", authController.forgotPassword);
+router.post("/reset-password", authController.resetPassword);
+
 // Protected routes
 router.get("/profile", auth, authController.getProfile);
 router.put("/profile", auth, authController.updateProfile);

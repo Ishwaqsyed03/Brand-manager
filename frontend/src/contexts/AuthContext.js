@@ -31,46 +31,101 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(guestUser);
   const [loading, setLoading] = useState(false);
 
+
   useEffect(() => {
-    // Temporarily bypass authentication: always use guest user
-    setUser(guestUser);
-    setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetch('/auth/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => res.json())
+        .then(data => {
+          setUser(data);
+          setLoading(false);
+        })
+        .catch(() => {
+          setUser(guestUser);
+          setLoading(false);
+        });
+    } else {
+      setUser(guestUser);
+      setLoading(false);
+    }
   }, []);
 
-  const login = async () => {
-    setUser(guestUser);
-    return { token: null, user: guestUser };
+  const login = async (email, password) => {
+    setLoading(true);
+    try {
+      const res = await fetch('/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (res.ok && data.token) {
+        localStorage.setItem('token', data.token);
+        setUser(data.user);
+        setLoading(false);
+        return { token: data.token, user: data.user };
+      } else {
+        setLoading(false);
+        throw new Error(data.error || 'Login failed');
+      }
+    } catch (err) {
+      setLoading(false);
+      throw err;
+    }
   };
 
   const register = async (userData) => {
-    const updatedUser = {
-      ...guestUser,
-      username: userData?.username || guestUser.username,
-      email: userData?.email || guestUser.email,
-      profile: {
-        ...guestUser.profile,
-        name: userData?.name || guestUser.profile.name
+    setLoading(true);
+    try {
+      const res = await fetch('/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+      const data = await res.json();
+      if (res.ok && data.token) {
+        localStorage.setItem('token', data.token);
+        setUser(data.user);
+        setLoading(false);
+        return { token: data.token, user: data.user };
+      } else {
+        setLoading(false);
+        throw new Error(data.error || 'Registration failed');
       }
-    };
-    setUser(updatedUser);
-    return { token: null, user: updatedUser };
+    } catch (err) {
+      setLoading(false);
+      throw err;
+    }
   };
 
   const logout = () => {
+    localStorage.removeItem('token');
     setUser(guestUser);
   };
 
   const updateProfile = async (profileData) => {
-    const updated = {
-      ...user,
-      profile: {
-        ...user.profile,
-        ...profileData
-      }
-    };
-    setUser(updated);
-    return updated;
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    const res = await fetch('/auth/profile', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(profileData)
+    });
+    const data = await res.json();
+    setUser(data);
+    return data;
+  };
+
+  // Social login stubs (to be implemented)
+  const socialLogin = async (platform) => {
+    // Redirect to backend OAuth endpoint
+    window.location.href = `/oauth/${platform}`;
   };
 
   const value = {
@@ -80,6 +135,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     updateProfile,
+    socialLogin,
   };
 
   return (

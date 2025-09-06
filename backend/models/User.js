@@ -58,6 +58,9 @@ const userSchema = new mongoose.Schema({
     autoSchedule: { type: Boolean, default: false },
     timezone: { type: String, default: 'UTC' }
   }
+  ,
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 }, {
   timestamps: true
 });
