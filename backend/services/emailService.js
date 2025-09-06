@@ -8,6 +8,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+
 const sendResetEmail = async (to, resetLink) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -18,4 +19,14 @@ const sendResetEmail = async (to, resetLink) => {
   await transporter.sendMail(mailOptions);
 };
 
-module.exports = { sendResetEmail };
+const sendVerificationEmail = async (to, verifyLink) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to,
+    subject: 'Verify your email address',
+    html: `<p>Welcome! Please verify your email by clicking <a href="${verifyLink}">here</a>. This link will expire in 1 hour.</p>`
+  };
+  await transporter.sendMail(mailOptions);
+};
+
+module.exports = { sendResetEmail, sendVerificationEmail };

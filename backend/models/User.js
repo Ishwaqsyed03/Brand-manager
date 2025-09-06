@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema({
     avatar: String,
     bio: String
   },
+  role: {
+    type: String,
+    enum: ['student', 'admin', 'brand_manager'],
+    default: 'student'
+  },
   socialConnections: {
     twitter: {
       connected: { type: Boolean, default: false },
@@ -61,6 +66,10 @@ const userSchema = new mongoose.Schema({
   ,
   resetPasswordToken: String,
   resetPasswordExpires: Date
+  ,
+  emailVerified: { type: Boolean, default: false },
+  emailVerificationToken: String,
+  emailVerificationExpires: Date
 }, {
   timestamps: true
 });

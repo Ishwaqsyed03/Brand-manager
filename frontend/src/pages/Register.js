@@ -10,7 +10,8 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    name: ''
+    name: '',
+    role: 'student'
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -45,7 +46,8 @@ const Register = () => {
         username: formData.username,
         email: formData.email,
         password: formData.password,
-        name: formData.name
+        name: formData.name,
+        role: formData.role
       });
       toast.success('Account created successfully!');
       navigate('/dashboard');
@@ -196,6 +198,22 @@ const Register = () => {
                   )}
                 </button>
               </div>
+            </div>
+
+            <div>
+              <label htmlFor="role" className="form-label">Role</label>
+              <select
+                id="role"
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="input-field"
+                required
+              >
+                <option value="student">Student</option>
+                <option value="admin">Admin</option>
+                <option value="brand_manager">Brand Manager</option>
+              </select>
             </div>
 
             <div className="flex items-start">

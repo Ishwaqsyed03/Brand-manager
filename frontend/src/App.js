@@ -24,7 +24,7 @@ function AppContent() {
   }, [isGuest]);
 
   return (
-    <Router basename="/Brand-manager">
+    <Router>
       <div className="min-h-screen bg-gray-50">
         <Navbar />
         {showAuthModal && (
@@ -45,6 +45,7 @@ function AppContent() {
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/verify-email/:token" element={<VerifyEmail />} />
             <Route path="/dashboard" element={isGuest ? <Navigate to="/login" /> : <Dashboard />} />
             <Route path="/posts" element={isGuest ? <Navigate to="/login" /> : <Posts />} />
             <Route path="/create" element={isGuest ? <Navigate to="/login" /> : <CreatePost />} />

@@ -1,3 +1,23 @@
+// Verify Email
+exports.verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.body;
+    const user = await User.findOne({
+      emailVerificationToken: token,
+      emailVerificationExpires: { $gt: Date.now() }
+    });
+    if (!user) {
+      return res.status(400).json({ error: 'Invalid or expired verification token' });
+    }
+    user.emailVerified = true;
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpires = undefined;
+    await user.save();
+    res.json({ message: 'Email verified successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
@@ -26,7 +46,7 @@ const buildGuestUser = (overrides = {}) => ({
 // Register user
 exports.register = async (req, res) => {
   try {
-    const { username, email, password, name } = req.body;
+  const { username, email, password, name, role } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
@@ -38,15 +58,28 @@ exports.register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Generate email verification token
+    const crypto = require('crypto');
+    const emailVerificationToken = crypto.randomBytes(32).toString('hex');
+    const emailVerificationExpires = Date.now() + 3600000; // 1 hour
+
     // Create user
     const user = new User({
       username,
       email,
       password: hashedPassword,
-      profile: { name }
+      profile: { name },
+      role,
+      emailVerificationToken,
+      emailVerificationExpires
     });
 
     await user.save();
+
+    // Send verification email
+    const { sendVerificationEmail } = require('../services/emailService');
+    const verifyLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email/${emailVerificationToken}`;
+    await sendVerificationEmail(user.email, verifyLink);
 
     // Generate token
     const token = jwt.sign(
@@ -56,13 +89,15 @@ exports.register = async (req, res) => {
     );
 
     res.status(201).json({
-      message: 'User created successfully',
+      message: 'User created successfully. Please verify your email.',
       token,
       user: {
         id: user._id,
         username: user.username,
         email: user.email,
-        profile: user.profile
+        profile: user.profile,
+        role: user.role,
+        emailVerified: user.emailVerified
       }
     });
   } catch (error) {
